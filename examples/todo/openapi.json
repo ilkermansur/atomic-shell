@@ -1,0 +1,700 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Yapılacaklar",
+    "description": "Listeler ve görevlerden oluşan örnek element.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/lists": {
+      "get": {
+        "tags": [
+          "lists"
+        ],
+        "summary": "Listeleri göster",
+        "description": "Bütün listeleri döndürür.",
+        "operationId": "lists_list",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TodoList"
+                  },
+                  "type": "array",
+                  "title": "Response Lists List"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "lists"
+        ],
+        "summary": "Liste oluştur",
+        "description": "Yeni bir liste oluşturur. Liste adı benzersiz olmalıdır.",
+        "operationId": "lists_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lists/{id}": {
+      "put": {
+        "tags": [
+          "lists"
+        ],
+        "summary": "Listeyi güncelle",
+        "description": "Listenin adını ve rengini değiştirir.",
+        "operationId": "lists_update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "lists"
+        ],
+        "summary": "Listeyi sil",
+        "description": "Listeyi siler. İçinde görev olan liste silinemez.",
+        "operationId": "lists_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos": {
+      "get": {
+        "tags": [
+          "todos"
+        ],
+        "summary": "Görevleri göster",
+        "description": "Bütün görevleri döndürür.",
+        "operationId": "todos_list",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Todo"
+                  },
+                  "type": "array",
+                  "title": "Response Todos List"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "todos"
+        ],
+        "summary": "Görev oluştur",
+        "description": "Yeni bir görev oluşturur. Kod benzersiz olmalı, liste var olmalıdır.",
+        "operationId": "todos_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TodoCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/{id}": {
+      "get": {
+        "tags": [
+          "todos"
+        ],
+        "summary": "Görevi göster",
+        "description": "Tek bir görevi döndürür.",
+        "operationId": "todos_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "todos"
+        ],
+        "summary": "Görevi güncelle",
+        "description": "Görevin alanlarını değiştirir.",
+        "operationId": "todos_update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TodoUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "todos"
+        ],
+        "summary": "Görevi sil",
+        "description": "Görevi siler.",
+        "operationId": "todos_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ListCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 2,
+            "title": "Ad",
+            "description": "Listenin adı. Benzersiz olmalıdır."
+          },
+          "color": {
+            "type": "string",
+            "enum": [
+              "mavi",
+              "yeşil",
+              "sarı",
+              "kırmızı"
+            ],
+            "title": "Renk",
+            "description": "Listenin etiketi.",
+            "default": "mavi"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "ListCreate"
+      },
+      "ListUpdate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 2,
+            "title": "Ad",
+            "description": "Listenin adı. Benzersiz olmalıdır."
+          },
+          "color": {
+            "type": "string",
+            "enum": [
+              "mavi",
+              "yeşil",
+              "sarı",
+              "kırmızı"
+            ],
+            "title": "Renk",
+            "description": "Listenin etiketi.",
+            "default": "mavi"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "ListUpdate",
+        "description": "Güncellemede oluşturmadaki alanların aynısı istenir."
+      },
+      "Todo": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 3,
+            "title": "Başlık",
+            "description": "Görevin kısa adı."
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{8}$",
+            "title": "Kod",
+            "description": "Sekiz haneli iş kodu. Benzersiz olmalıdır."
+          },
+          "list_id": {
+            "type": "integer",
+            "title": "Liste",
+            "description": "Görevin ait olduğu liste.",
+            "x-ref": "lists_list",
+            "x-ref-label": "name"
+          },
+          "priority": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Öncelik",
+            "description": "1 en düşük, 5 en yüksek.",
+            "default": 3
+          },
+          "done": {
+            "type": "boolean",
+            "title": "Tamamlandı",
+            "description": "Görev bitti mi.",
+            "default": false
+          },
+          "due": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Son tarih",
+            "description": "Görevin bitmesi gereken gün. Boş bırakılabilir."
+          },
+          "id": {
+            "type": "integer",
+            "title": "No",
+            "description": "Görevin kimliği."
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "code",
+          "list_id",
+          "id"
+        ],
+        "title": "Todo"
+      },
+      "TodoCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 3,
+            "title": "Başlık",
+            "description": "Görevin kısa adı."
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{8}$",
+            "title": "Kod",
+            "description": "Sekiz haneli iş kodu. Benzersiz olmalıdır."
+          },
+          "list_id": {
+            "type": "integer",
+            "title": "Liste",
+            "description": "Görevin ait olduğu liste.",
+            "x-ref": "lists_list",
+            "x-ref-label": "name"
+          },
+          "priority": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Öncelik",
+            "description": "1 en düşük, 5 en yüksek.",
+            "default": 3
+          },
+          "done": {
+            "type": "boolean",
+            "title": "Tamamlandı",
+            "description": "Görev bitti mi.",
+            "default": false
+          },
+          "due": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Son tarih",
+            "description": "Görevin bitmesi gereken gün. Boş bırakılabilir."
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "code",
+          "list_id"
+        ],
+        "title": "TodoCreate"
+      },
+      "TodoList": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 2,
+            "title": "Ad",
+            "description": "Listenin adı. Benzersiz olmalıdır."
+          },
+          "color": {
+            "type": "string",
+            "enum": [
+              "mavi",
+              "yeşil",
+              "sarı",
+              "kırmızı"
+            ],
+            "title": "Renk",
+            "description": "Listenin etiketi.",
+            "default": "mavi"
+          },
+          "id": {
+            "type": "integer",
+            "title": "No",
+            "description": "Listenin kimliği."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "id"
+        ],
+        "title": "TodoList"
+      },
+      "TodoUpdate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 3,
+            "title": "Başlık",
+            "description": "Görevin kısa adı."
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{8}$",
+            "title": "Kod",
+            "description": "Sekiz haneli iş kodu. Benzersiz olmalıdır."
+          },
+          "list_id": {
+            "type": "integer",
+            "title": "Liste",
+            "description": "Görevin ait olduğu liste.",
+            "x-ref": "lists_list",
+            "x-ref-label": "name"
+          },
+          "priority": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Öncelik",
+            "description": "1 en düşük, 5 en yüksek.",
+            "default": 3
+          },
+          "done": {
+            "type": "boolean",
+            "title": "Tamamlandı",
+            "description": "Görev bitti mi.",
+            "default": false
+          },
+          "due": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Son tarih",
+            "description": "Görevin bitmesi gereken gün. Boş bırakılabilir."
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "code",
+          "list_id"
+        ],
+        "title": "TodoUpdate",
+        "description": "Güncellemede oluşturmadaki alanların aynısı istenir."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

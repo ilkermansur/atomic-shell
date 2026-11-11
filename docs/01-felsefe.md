@@ -20,8 +20,8 @@ elektron kabuğuna "atomic shell" denir; ad buradan gelir.
 | Terim | Kabukta | Örnek |
 |---|---|---|
 | Atom altı parçacık | Bir elementin arkasındaki sistemin iç işleyişi. Kabuk bu seviyeyi görmez. | SIP mesajı, SQL sorgusu |
-| Atom | Girdisi ve çıktısı standart tek bir API ucu. Kabuğun gördüğü en alt seviye. | `asterisk.extension.create` |
-| Element | Atomlarını kendi API'siyle sunan, ayrı çalışan servis. Takılır ve çıkarılır. | Santral API'si, CRM, e-posta |
+| Atom | Girdisi ve çıktısı standart tek bir API ucu. Kabuğun gördüğü en alt seviye. | `todos_create` |
+| Element | Atomlarını kendi API'siyle sunan, ayrı çalışan servis. İçe aktarılarak takılır. | Yapılacaklar servisi, santral API'si |
 | Periyodik tablo | Takılı elementlerin ve atomlarının kataloğu. | Yeni element takılınca tabloya bir kutu eklenir |
 | Molekül | Farklı elementlerin atomlarından kurulan, kuruma anlam ifade eden iş. | Yeni personel |
 | DNA | Bir kurumun molekül ve ayar tanımlarının tamamı. | Dışa aktarılabilen tanım seti |
@@ -48,22 +48,22 @@ Atomlar yazıldıktan sonraki her iş arayüzden yapılır.
 ## İlkeler
 
 1. **Kabuk alan bilmez.** İçinde hiçbir sisteme özgü kod bulunmaz.
-2. **Atomlar tek kalıptadır.** Her atom aynı biçimde girdi alır, aynı zarfla
-   cevap verir.
-3. **Her element kendi atomlarıyla gelir.** Element ayrı bir servistir; kabuğa
-   adresiyle takılır.
+2. **Atomlar tek kalıptadır.** Her atom, FastAPI anayasasına göre yazılmış bir
+   API ucudur.
+3. **Her element kendi atomlarıyla gelir.** Element ayrı bir servistir; OpenAPI
+   belgesi içe aktarılarak kabuğa takılır.
 4. **Atom başka atomu çağırmaz, element başka elementi tanımaz.** Birleştirme
    yalnızca moleküllerde olur.
 5. **Molekülleri yalnızca kabuk çalıştırır.**
 6. **Arayüzde yapılabilen her şey kabuğun API'sinde de vardır.**
-7. **Her değişiklik kayıtlıdır ve mümkünse geri alınabilir.** Geri alınamayan
-   işlem bunu önceden bildirir.
+7. **Her çalıştırma kayıtlıdır.** Geri alma yoktur; yarıda kalan iş hangi
+   adımda kaldığıyla birlikte açıkça gösterilir.
 8. **Kabuk kapalıyken elementler çalışmaya devam eder.** Kabuk yönetim
    tarafıdır; arkadaki sistemler ona bağımlı değildir.
-9. **En yalın API de takılabilir.** Plan ve geri alma isteğe bağlıdır; yalnızca
-   katalog ve uygulama sunan bir element de arayüzünü alır.
-10. **Molekül dili küçük kalır.** Sıra, alan eşleme, koşul ve alt molekül.
-    Döngü ve karmaşık mantık yeni bir atomdur.
+9. **Çalıştırılabilir olan yalnızca moleküldür.** Atom tek başına admine
+   görünmez; tek atomluk iş de bir moleküldür.
+10. **Molekül dili küçük kalır.** Sıra ve alan eşleme. Karmaşık mantık yeni bir
+    atomdur.
 11. **AI sessizce uygulamaz ve sistem AI olmadan da tam çalışır.**
 12. **Kod sade ve anlatılabilir yazılır.** Bkz. `02-mimari.md`.
 

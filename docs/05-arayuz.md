@@ -1,61 +1,51 @@
 # 5. Arayüz
 
-Arayüzün içinde santral mantığı yoktur. Yalnızca dört şeyi tanır: element, atom,
-molekül ve çalıştırma. Katalogdan ne gelirse onu çizer; yeni atom ya da molekül
+Arayüzün içinde alan mantığı yoktur. Yalnızca element, atom, molekül ve
+çalıştırmayı tanır; katalogdan ne gelirse onu çizer. Yeni atom ya da molekül
 yeni ekran kodu gerektirmez.
 
-Atomlar yazıldıktan sonraki her iş arayüzden yapılır.
+## Rollere göre ekranlar
 
-## Üç profil
+### Mimar
 
-| Profil | Yaptığı iş | Çalıştığı yer |
-|---|---|---|
-| Mimar | Atom ve element yazar | Kod; arayüzde periyodik tablo ve atom deneme ekranı |
-| Tasarımcı | Atomlardan molekül tasarlar, yayınlar, admin gruplarına açar | Molekül tasarım ekranı |
-| Admin | Kendisine açılan molekülleri çalıştırarak santral tanımlarını yapar | Moleküllerden otomatik oluşan ekranlar |
+- **Periyodik tablo:** her element iki harfli simgesi, adı ve atom sayısıyla
+  bir kutudur.
+- **İçe aktarma:** OpenAPI belgesi, servis adresi ve erişim anahtarıyla element
+  ekler; anayasa denetiminin sonucunu görür.
+- **Atom ekranı:** seçilen atomun tam arayüzü. Bütün alanlarıyla form ya da
+  bütün kolonlarıyla tablo; oradan denenebilir.
+- **Molekül üret:** atomdan tek adımlı bir molekül taslağı oluşturur.
 
-- Üst profil alttakinin her işini yapabilir.
-- Adminler gruplara ayrılır; tasarımcı her molekülü hangi grupların göreceğini
-  belirler.
-- Buradaki admin santralin günlük yöneticisidir; sistemin en yetkili profili
-  mimardır.
+### Tasarımcı
 
-Kurulumun ilk döneminde üç rol de uzmandadır. Eğitimle önce admin, sonra
-tasarımcı rolü kurumun personeline geçer.
+- **Molekül tasarım ekranı:** palet, tuval, alan paneli ve sihirbaz önizlemesi.
+  Ayrıntı `04-molekuller.md` içindedir.
+- **Kullanıcılar:** admin kullanıcısı oluşturur ve hangi molekülleri
+  kullanabileceğini seçer.
 
-## Ekranlar
+### Admin
 
-### Mimar: periyodik tablo
-
-- Her element iki harfli simgesi, adı ve atom sayısıyla bir kutudur.
-- Kurulu olmayan elementler soluk durur; kurumun neleri ekleyebileceğini
-  gösterir.
-- Elemente tıklanınca atomları, atoma tıklanınca girdi ve çıktı şeması ile
-  etiketleri (okur/yazar, geri alınabilir) görünür.
-- "Dene" atomu doğrudan çalıştırır ve dönen zarfı gösterir.
-
-### Tasarımcı: molekül tasarım ekranı
-
-- Solda moleküller ve atom paleti, ortada tuval, sağda seçili düğümün alanları.
-- Üstte molekülün adı, durumu, grupları ve düğmeler: dışa aktar, dene, yayınla.
-- Altta admin formunun canlı önizlemesi.
-- Ayrıntılar `04-molekuller.md` içindedir.
-
-### Admin: işlemler ve kayıt
-
-- Yalnızca yayında olan ve adminin grubuna açılmış moleküller kart olarak
+- **İşlemler:** yalnızca kendisine verilen, yayındaki moleküller kart olarak
   görünür.
-- Karta tıklayınca otomatik form, ardından plan, ardından uygulama gelir.
-- Çıktısı liste olan molekül tablo olarak çizilir; tasarımcı satırlara başka
-  molekülleri eylem olarak bağlayabilir.
-- Kayıt bölümü çalıştırmaları listeler; her satırda geri al düğmesi bulunur.
-- "Yeni molekül iste" talebi tasarımcıya iletir.
+- **Sihirbaz:** karta tıklayınca molekülün adımları sırayla gelir; sonda özet
+  ve uygulama.
+- **Kayıt:** kendi çalıştırmaları, adım adım sonuçlarıyla.
+
+## Üretilen iki parça
+
+Arayüzün bütün işini iki üretici yapar; ikisi de alan listesinden beslenir.
+
+- **Form üretici:** alan türüne ve kısıtlarına göre girdi alanlarını çizer ve
+  denetler.
+- **Tablo üretici:** kayıt listesini kolon aramalı, sıralanabilir, CSV olarak
+  dışa aktarılabilir tabloya çevirir.
+
+Mimarın atom ekranı, tasarımcının önizlemesi ve adminin sihirbazı aynı iki
+üreticiyi kullanır.
 
 ## Tasarım dili
 
-Arayüz minimalist ve temizdir; üç profilin ekranları aynı dili kullanır.
-
-- Admin ekranı tek sütunlu sade bir formdur.
+- Minimalist ve temiz; üç rolün ekranları aynı dili kullanır.
 - Ekranda yalnızca o anda gereken şey görünür; ayrıntı tıklayınca açılır.
 - Bileşen takımı küçüktür: kart, form alanı, tablo, düğüm, durum etiketi.
 - Periyodik tablo kutusu (büyük simge, küçük ad) arayüzün ve markanın tekrar
@@ -66,52 +56,35 @@ Arayüz minimalist ve temizdir; üç profilin ekranları aynı dili kullanır.
 - **Koyu / açık tema:** üst çubuktan değişir. Bütün renkler tek bir değişken
   listesinden gelir.
 - **TR / EN:** üst çubuktan değişir; tercih kullanıcı başına saklanır.
-  - Çevrilenler: arayüzün kendi metinleri, profil adları, element, atom ve alan
-    adları.
-  - Çevrilmeyenler: molekül adı ve form etiketleri. Bunlar kurumun DNA'sıdır;
-    tasarımcı hangi dilde yazdıysa öyle görünür.
-
-## Sonraki arayüz parçaları
-
-Çekirdek arayüz oturduktan sonra eklenir; olmasalar da sistem kullanılır.
-
-- **Pano:** hazır moleküllerden beslenen tablolar ve kartlar; canlı durum.
-- **Çağrı haritası:** veritabanındaki kayıtlardan otomatik çizilen yönlendirme
-  görünümü. Kaynak değil, görünümdür. "Bu numarayı ararsam ne olur" simülasyonu
-  buraya gelir.
-- **Niyet çubuğu:** yazılan isteği mevcut form ve moleküllere çevirir. Cevap
-  metin değil, arayüzün kendisidir. AI kapalıyken arama ve komut paleti olarak
-  çalışır.
-- **AI yardımcısı:** "bu çağrı neden buraya düştü" gibi soruları açıklar,
-  tasarımcıya mevcut atomlardan molekül taslağı önerir.
+  - Çevrilenler: arayüzün kendi metinleri.
+  - Çevrilmeyenler: element, atom ve alan başlıkları (servis hangi dilde
+    yazdıysa) ile molekül adı ve form etiketleri (tasarımcı hangi dilde
+    yazdıysa).
 
 ## Prototip
 
-`prototype/` klasöründe üç profilin tıklanabilir bir prototipi bulunur. Sahte
-veriyle çalışır; gerçek Asterisk'e ya da veritabanına bağlı değildir.
+`prototype/` klasöründe üç rolün tıklanabilir bir prototipi bulunur. Sahte
+veriyle çalışır ve tasarımın önceki halini gösterir.
 
-Prototipin gösterdikleri:
+- Uygun bulunanlar: üç ekranın yapısı, tasarım dili, periyodik tablo, tuval,
+  tema ve dil.
+- Güncel tasarımdan farkları: admin tek form görür (sihirbaz yok), tablo yok,
+  içe aktarma yok.
+- Kod atılabilirdir; ürüne taşınmaz. Görsel dil, renk değişkenleri ve çeviri
+  sözlüğü taşınır.
 
-- Üç ekranın yapısı ve tasarım dili uygun bulundu.
-- Drawflow, NiceGUI içine yaklaşık 25 satır JavaScript ile oturdu.
-- Koyu/açık tema ve TR/EN çalışıyor.
+## Sonraki arayüz parçaları
 
-Prototipin eksikleri:
-
-- Koşul ve alt molekül düğümleri yok.
-- Tuvalde elle çizilen bağlantılar kaydedilmiyor.
-- Veri bellekte durur.
-- Kod atılabilirdir: tek dosyada, iç içe işlevlerle yazıldı. Ürüne taşınmaz;
-  her ekran kod kurallarına göre `gui/` altında yeniden yazılır. Görsel dil,
-  renk değişkenleri ve çeviri sözlüğü taşınır.
+- **Pano:** okuyan moleküllerden beslenen tablolar ve kartlar.
+- **Niyet çubuğu ve AI yardımcısı:** yazılan isteği mevcut moleküllere çevirir;
+  tasarımcıya molekül taslağı önerir.
+- **Alana özel görünümler:** bir elementin kabuğa kendi ekranını eklemesi.
 
 ## NiceGUI'nin sınırları
 
-- Ekran durumu sunucuda tutulur; onlarca eşzamanlı yönetici için uygundur,
-  binlerce kullanıcılı bir portal için değildir.
-- Yoğun görsel parçalar (tuval, çağrı haritası) için dış kütüphane sarmak
-  gerekir.
-- Arayüz API'nin sıradan bir istemcisi olduğu için ileride başka bir
-  teknolojiyle yeniden yazılabilir; atomlara ve moleküllere dokunulmaz.
-- Dış kütüphaneler ürünle birlikte dağıtılmalıdır; internete kapalı kurumlarda
-  dışarıdan yüklenemez.
+- Ekran durumu sunucuda tutulur; onlarca eşzamanlı yönetici için uygundur.
+- Yoğun görsel parçalar (tuval) için dış kütüphane sarmak gerekir.
+- Dış kütüphaneler ürünle birlikte dağıtılmalıdır; internete kapalı
+  kurulumlarda dışarıdan yüklenemez.
+- Arayüz kabuğun API'sinin sıradan bir istemcisi olduğu için ileride başka bir
+  teknolojiyle yeniden yazılabilir.

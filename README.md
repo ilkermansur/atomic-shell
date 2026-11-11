@@ -1,50 +1,78 @@
 # atomic-shell
 
-İçine API uçları alan bir kabuk. Sistemini "önce API" olarak yazarsın; kabuk o
-uçlardan arayüzü, yetkilendirmeyi, kaydı ve iş akışlarını kendisi oluşturur.
+İçine API uçları alan bir kabuk. Sistemini "önce API" olarak yazarsın, OpenAPI
+belgesini içe aktarırsın; kabuk o uçlardan arayüzü, yetkilendirmeyi, kaydı ve iş
+akışlarını kendisi oluşturur.
 
 - Her API ucu bir **atom**dur: girdisi ve çıktısı standarttır.
-- Atomlarını sunan servis bir **element**tir; kabuğa adresiyle takılır.
-- Atomlar bir tuvalde bir araya getirilerek **molekül** kurulur.
+- Atomlarını sunan servis bir **element**tir; içe aktarılarak takılır.
+- Atomlar bir tuvalde sıraya dizilerek **molekül** kurulur.
 - Son kullanıcı yalnızca bu moleküllerden otomatik oluşan sade ekranları görür.
 
 Kabuk hiçbir alanı tanımaz. İlk kullanım alanı `atomic-pbx` olacak: Asterisk
 için yazılmış santral API'si (ayrı bir proje).
 
-Durum: tasarım aşaması. Tasarım belgeleri ve tıklanabilir bir arayüz prototipi
-var; ürün kodu henüz yazılmadı.
+Durum: Faz 1 sürüyor. İçe aktarma, atom ekranları, molekül üretme ve sihirbaz
+çalışıyor. Nerede kalındığı ve sıradaki adımlar: [DURUM.md](DURUM.md).
 
 ## Kısa sözlük
 
 | Terim | Anlamı |
 |---|---|
 | Atom | Girdisi ve çıktısı standart tek bir API ucu |
-| Element | Atomlarını kendi API'siyle sunan, takılıp çıkarılan servis |
-| Periyodik tablo | Takılı elementlerin ve atomlarının kataloğu |
-| Molekül | Atomlardan kurulan, kuruma özel iş |
-| DNA | Kurumun tüm molekül ve ayar tanımları |
+| Element | Atomlarını kendi API'siyle sunan, içe aktarılan servis |
+| Periyodik tablo | İçe aktarılmış elementlerin ve atomlarının kataloğu |
+| Molekül | Atomlardan kurulan, kuruma özel iş. Çalıştırılabilir olan yalnızca moleküldür |
+| DNA | Bir kurulumdaki bütün moleküllerin tanımı |
 
-Üç profil: **mimar** atom yazar, **tasarımcı** molekül tasarlar, **admin**
-molekülleri kullanır.
+Üç rol: **mimar** atom yazar ve içe aktarır, **tasarımcı** molekül tasarlar,
+**admin** kendisine verilen molekülleri kullanır.
 
 ## Belgeler
 
 | Belge | İçerik |
 |---|---|
-| [1. Felsefe](docs/01-felsefe.md) | Amaç, benzetme, üç profil, ilkeler, kabuğun sınırı |
-| [2. Mimari](docs/02-mimari.md) | Kabuk ve elementler, katmanlar, klasör yapısı, yetki, teknoloji, kod kuralları |
-| [3. Atom sözleşmesi](docs/03-atom-sozlesmesi.md) | Elementin sunduğu uçlar, üç seviye, katalog, zarf, hata kodları, kayıt ve geri alma |
-| [4. Moleküller](docs/04-molekuller.md) | Molekül yapısı, tuval, yaşam döngüsü, dışa/içe aktarma, DNA |
-| [5. Arayüz](docs/05-arayuz.md) | Ekranlar, tasarım dili, tema ve dil, prototip |
-| [6. Yol haritası](docs/06-yol-haritasi.md) | Alt projeler, v1.0 tanımı, ilk adım, açık kararlar |
+| [1. Felsefe](docs/01-felsefe.md) | Amaç, benzetme, üç rol, ilkeler, kabuğun sınırı |
+| [2. Mimari](docs/02-mimari.md) | Kabuk ve elementler, katmanlar, klasör yapısı, roller, kod kuralları |
+| [3. Atomlar](docs/03-atomlar.md) | İçe aktarma, eyleme göre arayüz, tablo ve form, kayıt |
+| [4. Moleküller](docs/04-molekuller.md) | Sıra ve veri bağı, alan kaynakları, sihirbaz, ön denetim, yarıda kalma |
+| [5. Arayüz](docs/05-arayuz.md) | Rollere göre ekranlar, tasarım dili, tema ve dil |
+| [6. Yol haritası](docs/06-yol-haritasi.md) | İki faz, adımlar, bitiş ölçütü, açık kararlar |
+| [7. FastAPI anayasası](docs/07-fastapi-anayasasi.md) | Bir servisin kabuğa sorunsuz içe aktarılması için kurallar |
 
-Belge 4 ve 5'teki örnekler santralden alınmıştır; kabuğun kendisi santrale özgü
-değildir.
+## Örnek element ve sınamalar
+
+`examples/todo/` anayasaya göre yazılmış küçük bir yapılacaklar servisidir;
+kabuk onunla geliştirilir ve sınanır.
+
+```bash
+python3 -m unittest discover -s tests
+```
+
+## Çalıştırma
+
+İki ayrı süreç gerekir: örnek servis ve kabuk. Proje kökünden:
+
+```bash
+python3 -m uvicorn main:app --app-dir examples/todo --port 8101
+```
+
+```bash
+python3 -m uvicorn app:app --port 8100
+```
+
+Ardından `http://localhost:8100` açılır. Kabuk boş başlar:
+
+1. "İçe aktar"a bas. Servis adresi `http://localhost:8101` olarak gelir; belge
+   oradan okunur ya da `examples/todo/openapi.json` dosyası yüklenir.
+2. Periyodik tabloda bir atom seç; formu ya da tablosu belgeden üretilir.
+3. "Molekül üret" ile atomu moleküle çevir.
+4. "Moleküller" ekranından molekülü çalıştır.
 
 ## Prototip
 
-Üç profilin ekranlarını sahte veriyle gösterir. Gerçek bir elemente bağlı
-değildir.
+Üç rolün ekranlarını sahte veriyle gösterir; tasarımın önceki halidir ve gerçek
+bir elemente bağlı değildir.
 
 ```bash
 python3 prototype/main.py
